@@ -1,0 +1,34 @@
+syntax="proto3";
+
+//以下所说的"服务器"不是真正的服务器，只是一个房间(ROOM)而已
+
+//Server消息类型
+enum ServerMessageType{
+	CREATE_SERVER_MSG = 0; //创建服务器
+	JOIN_SERVER_MSG	  = 1; //加入服务器
+	LEAVE_SERVER_MSG  = 2; //离开服务器
+	GET_ROOM_LIST_MSG = 3; //获取房间列表
+	RENOVATE_ROOM_INFO_MSG = 4; //刷新房间信息
+}
+
+//服务器相关操作
+message ServerMsg{
+	ServerMessageType msgType = 1; //消息类型
+	int32 serverId = 2; //目标服务器ID
+	repeated int32 roomList = 3; //房间id列表
+	repeated int32 roomPeopleNum = 4;//房间人数
+	repeated bool roomStatus = 5; //房间状态
+}
+
+//Game消息类型
+enum GameMessageType{
+	GAME_START_MSG = 0; //游戏开始
+	ATK_FOE_MSG	= 1; //攻击敌人
+	GAME_OVER_MSG = 2; //游戏结束
+}
+
+//游戏逻辑相关信息
+message GameMsg{
+	GameMessageType msgType = 1; //消息类型
+	int32 atkPower = 2; //攻击强度
+}
