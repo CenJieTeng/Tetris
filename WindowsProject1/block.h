@@ -2,11 +2,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 #include <memory>
-
-//”≈ªØµ„3////////////
-#define WIDTH  12
-#define HEIGHT 15
-/////////////////////
+#include "information.h"
 
 class Block
 {
@@ -18,18 +14,18 @@ public:
 	POINT Shape[4];
 
 public:
-	bool MoveDownBlovk(int map[WIDTH][HEIGHT]);
-	bool MoveLeftBlovk(int map[WIDTH][HEIGHT]);
-	bool MoveRightBlovk(int map[WIDTH][HEIGHT]);
-	virtual bool ChangeBlock(int map[WIDTH][HEIGHT]) = 0;
+	bool MoveDownBlovk(int map[Width][Height]);
+	bool MoveLeftBlovk(int map[Width][Height]);
+	bool MoveRightBlovk(int map[Width][Height]);
+	virtual bool ChangeBlock(int map[Width][Height]) = 0;
 
 protected:
-	bool CheckChangeBlock(int map[WIDTH][HEIGHT]);
+	bool CheckChangeBlock(int map[Width][Height]);
 
 private:
-	bool CheckDown(int map[WIDTH][HEIGHT]);
-	bool CheckLeft(int map[WIDTH][HEIGHT]);
-	bool CheckRight(int map[WIDTH][HEIGHT]);
+	bool CheckDown(int map[Width][Height]);
+	bool CheckLeft(int map[Width][Height]);
+	bool CheckRight(int map[Width][Height]);
 };
 
 #endif // !BLOCK_H

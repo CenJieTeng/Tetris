@@ -12,7 +12,7 @@ Block_O::~Block_O()
 {
 }
 
-bool Block_O::ChangeBlock(int map[WIDTH][HEIGHT])
+bool Block_O::ChangeBlock(int map[Width][Height])
 {
 	return true;
 }

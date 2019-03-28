@@ -12,7 +12,7 @@ Block_I::~Block_I()
 {
 }
 
-bool Block_I::ChangeBlock(int map[WIDTH][HEIGHT])
+bool Block_I::ChangeBlock(int map[Width][Height])
 {
 	int tempState = State;
 	POINT tempShape[4];

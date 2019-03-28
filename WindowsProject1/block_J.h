@@ -11,7 +11,7 @@ public:
 
 private:
 	int State;
-	virtual bool ChangeBlock(int map[WIDTH][HEIGHT]);
+	virtual bool ChangeBlock(int map[Width][Height]);
 	//virtual bool check(int map[WIDTH][HEIGHT]);
 };
 

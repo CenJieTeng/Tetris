@@ -162,6 +162,7 @@
     <ClInclude Include="block_T.h" />
     <ClInclude Include="block_Z.h" />
     <ClInclude Include="client.h" />
+    <ClInclude Include="information.h" />
     <ClInclude Include="message.pb.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />

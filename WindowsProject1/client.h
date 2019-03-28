@@ -10,7 +10,6 @@
 #include <boost/asio.hpp>
 #include "stdafx.h"
 #pragma comment(lib, "WINMM.LIB")
-#define TIMER_ID1 1
 
 using boost::asio::ip::tcp;
 

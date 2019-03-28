@@ -10,7 +10,7 @@ public:
 	virtual ~Block_O();
 
 private:
-	virtual bool ChangeBlock(int map[WIDTH][HEIGHT]);
+	virtual bool ChangeBlock(int map[Width][Height]);
 	//virtual bool check(int map[WIDTH][HEIGHT]);
 };
 
