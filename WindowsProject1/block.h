@@ -20,12 +20,12 @@ public:
 	virtual bool ChangeBlock(int map[Width][Height]) = 0;
 
 protected:
-	bool CheckChangeBlock(int map[Width][Height]);
+	bool CheckChangeBlock(int map[Width][Height]) const;
 
 private:
-	bool CheckDown(int map[Width][Height]);
-	bool CheckLeft(int map[Width][Height]);
-	bool CheckRight(int map[Width][Height]);
+	bool CheckDown(int map[Width][Height]) const;
+	bool CheckLeft(int map[Width][Height]) const;
+	bool CheckRight(int map[Width][Height]) const;
 };
 
 #endif // !BLOCK_H
