@@ -57,10 +57,10 @@
     <ClInclude Include="client.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="message.pb.h">
+    <ClInclude Include="information.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="information.h">
+    <ClInclude Include="message.pb.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

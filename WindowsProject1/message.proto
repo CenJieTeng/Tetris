@@ -1,34 +1,36 @@
-syntax="proto3";
+ï»¿syntax = "proto3";
 
-//ÒÔÏÂËùËµµÄ"·şÎñÆ÷"²»ÊÇÕæÕıµÄ·şÎñÆ÷£¬Ö»ÊÇÒ»¸ö·¿¼ä(ROOM)¶øÒÑ
+//ä»¥ä¸‹æ‰€è¯´çš„"æœåŠ¡å™¨"ä¸æ˜¯çœŸæ­£çš„æœåŠ¡å™¨ï¼Œåªæ˜¯ä¸€ä¸ªæˆ¿é—´(ROOM)è€Œå·²
 
-//ServerÏûÏ¢ÀàĞÍ
+//Serveræ¶ˆæ¯ç±»å‹
 enum ServerMessageType{
-	CREATE_SERVER_MSG = 0; //´´½¨·şÎñÆ÷
-	JOIN_SERVER_MSG	  = 1; //¼ÓÈë·şÎñÆ÷
-	LEAVE_SERVER_MSG  = 2; //Àë¿ª·şÎñÆ÷
-	GET_ROOM_LIST_MSG = 3; //»ñÈ¡·¿¼äÁĞ±í
-	RENOVATE_ROOM_INFO_MSG = 4; //Ë¢ĞÂ·¿¼äĞÅÏ¢
+	CREATE_SERVER_MSG = 0; //åˆ›å»ºæœåŠ¡å™¨
+	JOIN_SERVER_MSG	  = 1; //åŠ å…¥æœåŠ¡å™¨
+	LEAVE_SERVER_MSG  = 2; //ç¦»å¼€æœåŠ¡å™¨
+	GET_ROOM_LIST_MSG = 3; //è·å–æˆ¿é—´åˆ—è¡¨
+	RENOVATE_ROOM_INFO_MSG = 4; //åˆ·æ–°æˆ¿é—´ä¿¡æ¯
 }
 
-//·şÎñÆ÷Ïà¹Ø²Ù×÷
+//æœåŠ¡å™¨ç›¸å…³æ“ä½œ
 message ServerMsg{
-	ServerMessageType msgType = 1; //ÏûÏ¢ÀàĞÍ
-	int32 serverId = 2; //Ä¿±ê·şÎñÆ÷ID
-	repeated int32 roomList = 3; //·¿¼äidÁĞ±í
-	repeated int32 roomPeopleNum = 4;//·¿¼äÈËÊı
-	repeated bool roomStatus = 5; //·¿¼ä×´Ì¬
+	ServerMessageType msgType = 1; //æ¶ˆæ¯ç±»å‹
+	int32 serverId = 2; //ç›®æ ‡æœåŠ¡å™¨ID
+	repeated int32 roomList = 3; //æˆ¿é—´idåˆ—è¡¨
+	repeated int32 roomPeopleNum = 4;//æˆ¿é—´äººæ•°
+	repeated bool roomStatus = 5; //æˆ¿é—´çŠ¶æ€
 }
 
-//GameÏûÏ¢ÀàĞÍ
+//Gameæ¶ˆæ¯ç±»å‹
 enum GameMessageType{
-	GAME_START_MSG = 0; //ÓÎÏ·¿ªÊ¼
-	ATK_FOE_MSG	= 1; //¹¥»÷µĞÈË
-	GAME_OVER_MSG = 2; //ÓÎÏ·½áÊø
+	GAME_START_MSG = 0; //æ¸¸æˆå¼€å§‹
+	ATK_FOE_MSG	= 1; //æ”»å‡»ã€è¢«æ”»å‡»
+	GAME_OVER_MSG = 2; //æ¸¸æˆç»“æŸ
+	CHAT_MSG = 3; //å‘é€ã€æ¥æ”¶ èŠå¤©ä¿¡æ¯
 }
 
-//ÓÎÏ·Âß¼­Ïà¹ØĞÅÏ¢
+//æ¸¸æˆé€»è¾‘ç›¸å…³ä¿¡æ¯
 message GameMsg{
-	GameMessageType msgType = 1; //ÏûÏ¢ÀàĞÍ
-	int32 atkPower = 2; //¹¥»÷Ç¿¶È
+	GameMessageType msgType = 1; //æ¶ˆæ¯ç±»å‹
+	int32 atkPower = 2; //æ”»å‡»å¼ºåº¦
+	string chat = 3; //èŠå¤©å†…å®¹
 }

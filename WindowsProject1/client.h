@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #ifndef CLIENT_H
 #define CLIENT_H
-//Ä£Äâ¿Í»§¶Ë
+//æ¨¡æ‹Ÿå®¢æˆ·ç«¯
 #include <iostream>
 #include <deque>
 #include <vector>
@@ -13,9 +13,9 @@
 
 using boost::asio::ip::tcp;
 
-using msg_deque = std::deque<message>; //ÏûÏ¢¶ÓÁĞ
+using msg_deque = std::deque<message>; //æ¶ˆæ¯é˜Ÿåˆ—
 
-//¿Í»§¶ËÀà
+//å®¢æˆ·ç«¯ç±»
 class client {
 public:
 	client(boost::asio::io_service &io_service,
@@ -23,7 +23,7 @@ public:
 		: io_service_(io_service),
 		socket_(io_service),
 		roomId_(0){
-		//Á¬½Óµ½·şÎñÆ÷
+		//è¿æ¥åˆ°æœåŠ¡å™¨
 		boost::asio::async_connect(
 			socket_,
 			endpoint_iter,
@@ -37,7 +37,7 @@ public:
 			});
 	}
 
-	//Ïò·şÎñÆ÷·¢ËÍÏûÏ¢
+	//å‘æœåŠ¡å™¨å‘é€æ¶ˆæ¯
 	template <typename T>
 	void write(MessageType messageType, T &msg, std::function<void()> fun = std::function<void()>()) {
 		
@@ -47,71 +47,78 @@ public:
 		std::string serializeMsg;
 
 		if (!msg.SerializeToString(&serializeMsg)) {
-			std::cout << "ĞòÁĞ»¯Ê§°Ü" << std::endl;
+			std::cout << "åºåˆ—åŒ–å¤±è´¥" << std::endl;
 			system("pause");
 			exit(-1);
 		}
 
-		sendMsg.setMessage(messageType, serializeMsg); //ÉèÖÃÒª·¢ËÍµÄÏûÏ¢
+		sendMsg.setMessage(messageType, serializeMsg); //è®¾ç½®è¦å‘é€çš„æ¶ˆæ¯
 
 		//io_service_.post([this, &msg] { start_write(msg); });
 		start_write(sendMsg);
 	}
 
-	//ÉèÖÃÓÎÏ·¿ªÊ¼º¯Êı
+	//è®¾ç½®æ¸¸æˆå¼€å§‹å‡½æ•°
 	void SetStartGameFun(std::function<void()> fun) {
 		startGameFun_ = fun;
 	}
 
-	//ÉèÖÃÊÜµ½ÉËº¦º¯Êı
+	//è®¾ç½®å—åˆ°ä¼¤å®³å‡½æ•°
 	void SetHurtFun(std::function<void()> fun) {
 		hurtFun_ = fun;
 	}
 
-	//ÉèÖÃË¢ĞÂº¯Êı
+	//è®¾ç½®åˆ·æ–°å‡½æ•°
 	void SetRenovateFun(std::function<void()> fun) {
 		renovateFun_ = fun;
 	}
 
-	//³õÊ¼»¯·¿¼äĞÅÏ¢
+	//è®¾ç½®
+	void SetReceiveFun(
+		std::function<
+			void(const std::string&)> fun) {
+		receive_ = fun;
+	}
+
+	//åˆå§‹åŒ–æˆ¿é—´ä¿¡æ¯
 	void InitRoomInfo() {
 		room_set_.clear();
 		room_people_num_vec_.clear();
 		room_status_vec_.clear();
 	}
 
-	//¹Ø±Õ¿Í»§¶Ësocket
+	//å…³é—­å®¢æˆ·ç«¯socket
 	void close() {
 		io_service_.post([this] { do_close(); });
 	}
 
-	//·µ»Ø·¿¼äÁĞ±í
+	//è¿”å›æˆ¿é—´åˆ—è¡¨
 	const std::set<_int32>& room_set() const {
 		return room_set_;
 	}
 
-	//·µ»Ø·¿¼äÈËÊıÁĞ±í
+	//è¿”å›æˆ¿é—´äººæ•°åˆ—è¡¨
 	const std::vector<_int32>& room_people_num_vec() const {
 		return room_people_num_vec_;
 	}
 
-	//·µ»Ø·¿¼ä×´Ì¬ÁĞ±í
+	//è¿”å›æˆ¿é—´çŠ¶æ€åˆ—è¡¨
 	const std::vector<bool>& room_status_vec() const {
 		return room_status_vec_;
 	}
 
-	//·µ»Øµ±Ç°ËùÔÚ·¿¼äºÅ
+	//è¿”å›å½“å‰æ‰€åœ¨æˆ¿é—´å·
 	const _int32 roomId() const {
 		return roomId_;
 	}
 
-	//ĞŞ¸Ä·¿¼äºÅ
+	//ä¿®æ”¹æˆ¿é—´å·
 	void roomId(_int32 id) {
 		roomId_ = id;
 	}
 
 private:
-	//¶ÁÈ¡ÏûÏ¢Í·²¿
+	//è¯»å–æ¶ˆæ¯å¤´éƒ¨
 	void do_read_header() {
 		boost::asio::async_read(
 			socket_,
@@ -129,7 +136,7 @@ private:
 			});
 	}
 
-	//¶ÁÈ¡ÏûÏ¢ÄÚÈİ
+	//è¯»å–æ¶ˆæ¯å†…å®¹
 	void do_read_body() {
 		boost::asio::async_read(
 			socket_,
@@ -137,7 +144,7 @@ private:
 				read_msg_.body(), read_msg_.bodyLength()),
 			[this](auto &error, size_t /*length*/) {
 				if (!error) {
-					handle_message(); //´¦ÀíÏûÏ¢
+					handle_message(); //å¤„ç†æ¶ˆæ¯
 
 					do_read_header();
 				}
@@ -148,20 +155,20 @@ private:
 			});
 	}
 
-	//´¦ÀíÊÕµ½µÄÏûÏ¢
+	//å¤„ç†æ”¶åˆ°çš„æ¶ˆæ¯
 	void handle_message() {
 		switch (read_msg_.type())
 		{
-		case SERVER_MSG: //·şÎñÆ÷Ïà¹ØĞÅÏ¢
+		case SERVER_MSG: //æœåŠ¡å™¨ç›¸å…³ä¿¡æ¯
 			dispose_server();
 			break;
-		case GAME_MSG: //ÓÎÏ·Ïà¹ØĞÅÏ¢
+		case GAME_MSG: //æ¸¸æˆç›¸å…³ä¿¡æ¯
 			dispose_game();
 			break;
 		}
 	}
 
-	//·´ĞòÁĞ»¯ÏûÏ¢
+	//ååºåˆ—åŒ–æ¶ˆæ¯
 	template<typename T>
 	bool ParseMessage(T &msg) {
 		bool ok = msg.ParseFromString(
@@ -172,34 +179,34 @@ private:
 		return ok;
 	}
 
-	//´¦Àí·şÎñÆ÷Ïà¹Ø´¦Àí
+	//å¤„ç†æœåŠ¡å™¨ç›¸å…³å¤„ç†
 	void dispose_server() {
 
 		ServerMsg serverMsg;
 		if (!ParseMessage(serverMsg)) {
-			std::cout << "severMsg:ÏûÏ¢½âÎöÊ§°Ü" << std::endl;
+			std::cout << "severMsg:æ¶ˆæ¯è§£æå¤±è´¥" << std::endl;
 			return;
 		}
 
 		switch (serverMsg.msgtype()) {
-		case CREATE_SERVER_MSG:  //´´½¨room
+		case CREATE_SERVER_MSG:  //åˆ›å»ºroom
 		{
-			roomId_ = serverMsg.serverid(); //ĞŞ¸Äµ±Ç°·¿¼äºÅ
+			roomId_ = serverMsg.serverid(); //ä¿®æ”¹å½“å‰æˆ¿é—´å·
 			if (fun_) {
 				fun_();
 				fun_ = std::function<void()>();
 			}
 		}
 		break;
-		case JOIN_SERVER_MSG:	 //¼ÓÈëroom
+		case JOIN_SERVER_MSG:	 //åŠ å…¥room
 			if (fun_) {
 				fun_();
 				fun_ = std::function<void()>();
 			}
 			break;
-		case LEAVE_SERVER_MSG:	 //Àë¿ªroom
+		case LEAVE_SERVER_MSG:	 //ç¦»å¼€room
 			break;
-		case GET_ROOM_LIST_MSG:  //»ñÈ¡·¿¼äÁĞ±í
+		case GET_ROOM_LIST_MSG:  //è·å–æˆ¿é—´åˆ—è¡¨
 		{
 			for (int i = 1; i < serverMsg.roomlist_size(); ++i) {
 				room_set_.insert(serverMsg.roomlist(i));
@@ -208,8 +215,8 @@ private:
 			}
 
 			if (fun_) {
-				fun_(); //»Øµ÷Ë¢ĞÂ
-				fun_ = std::function<void()>(); //ÖØÖÃ
+				fun_(); //å›è°ƒåˆ·æ–°
+				fun_ = std::function<void()>(); //é‡ç½®
 			}
 		}
 		break;
@@ -222,30 +229,39 @@ private:
 		}
 	}
 
-	//´¦ÀíÓÎÏ·Ïà¹Ø´¦Àí
+	//å¤„ç†æ¸¸æˆç›¸å…³å¤„ç†
 	void dispose_game() {
 
 		GameMsg gameMsg;
 		if (!ParseMessage(gameMsg)) {
-			std::cout << "gameMsg:ÏûÏ¢½âÎöÊ§°Ü" << std::endl;
+			std::cout << "gameMsg:æ¶ˆæ¯è§£æå¤±è´¥" << std::endl;
 			return;
 		}
 
 		switch (gameMsg.msgtype())
 		{
-		case GAME_START_MSG: //ÓÎÏ·¿ªÊ¼
-			assert(startGameFun_); //startGameFun_±ØĞë°üº¬ÓĞĞ§Ä¿±ê
+		case GAME_START_MSG: //æ¸¸æˆå¼€å§‹
+			assert(startGameFun_); //startGameFun_å¿…é¡»åŒ…å«æœ‰æ•ˆç›®æ ‡
 			startGameFun_();
 			break;
-		case ATK_FOE_MSG:	//±»¹¥»÷
-			assert(hurtFun_); //hurtFun_±ØĞë°üº¬ÓĞĞ§Ä¿±ê
+		case ATK_FOE_MSG:	//è¢«æ”»å‡»
+			assert(hurtFun_); //hurtFun_å¿…é¡»åŒ…å«æœ‰æ•ˆç›®æ ‡
 			hurtFun_();
 			break;
-		case GAME_OVER_MSG: //ÓÎÏ·½áÊø
+		case GAME_OVER_MSG: //æ¸¸æˆç»“æŸ
 		{
-			mciSendString(L"open ./src/Ê¤Àû.mp3", NULL, 0, 0);
-			mciSendString(L"play ./src/Ê¤Àû.mp3", NULL, 0, 0);
+			mciSendString(L"open ./src/èƒœåˆ©.mp3", NULL, 0, 0);
+			mciSendString(L"play ./src/èƒœåˆ©.mp3", NULL, 0, 0);
 			MessageBox(NULL, L"You Win!", L"Message", MB_OK);
+		}
+		break;
+		case CHAT_MSG: //æ¥æ”¶æ¶ˆæ¯
+		{
+			if (!receive_)
+				break;
+
+			receive_(gameMsg.chat().substr(
+				gameMsg.chat().find(":")+1));
 		}
 		break;
 		default:
@@ -253,17 +269,17 @@ private:
 		}
 	}
 
-	//°ÑÏûÏ¢´æ·ÅÔÚÏûÏ¢¶ÓÁĞ
+	//æŠŠæ¶ˆæ¯å­˜æ”¾åœ¨æ¶ˆæ¯é˜Ÿåˆ—
 	void start_write(const message &msg) {
-		bool isWriteing = !write_msg_deque_.empty(); //ÕıÔÚ·¢ËÍÏûÏ¢...
+		bool isWriteing = !write_msg_deque_.empty(); //æ­£åœ¨å‘é€æ¶ˆæ¯...
 		write_msg_deque_.push_back(msg);
 
-		//Èç¹û²»ÊÇÔÚ·¢ËÍÏûÏ¢,¾Ído_write
+		//å¦‚æœä¸æ˜¯åœ¨å‘é€æ¶ˆæ¯,å°±do_write
 		if (!isWriteing)
 			do_write();
 	}
 
-	//ÕæÕıĞ´ÏûÏ¢µÄµØ·½
+	//çœŸæ­£å†™æ¶ˆæ¯çš„åœ°æ–¹
 	void do_write() {
 		boost::asio::async_write(
 			socket_,
@@ -271,10 +287,10 @@ private:
 				write_msg_deque_.front().data(), write_msg_deque_.front().length()),
 			[this](auto &error, size_t /*length*/) {
 				if (!error
-					&& write_msg_deque_.front().chack_header()) { //ÏûÏ¢·¢ËÍÇ°Ó¦¸Ã¼ì²é...
-					write_msg_deque_.pop_front(); //É¾³ı·¢ËÍ³öÈ¥µÄÏûÏ¢
+					&& write_msg_deque_.front().chack_header()) { //æ¶ˆæ¯å‘é€å‰åº”è¯¥æ£€æŸ¥...
+					write_msg_deque_.pop_front(); //åˆ é™¤å‘é€å‡ºå»çš„æ¶ˆæ¯
 					if (!write_msg_deque_.empty()) {
-						do_write(); //¼ÌĞø·¢ËÍ
+						do_write(); //ç»§ç»­å‘é€
 					}
 				}
 				else {
@@ -283,33 +299,25 @@ private:
 			});
 	}
 
-	//¹Ø±Õsocket
+	//å…³é—­socket
 	void do_close() {
 		socket_.close();
 	}
 
 	boost::asio::io_service &io_service_;
 	tcp::socket socket_;
-	message read_msg_; //¶ÁÈ¡µ½µÄÏûÏ¢
-	msg_deque write_msg_deque_; //·¢ËÍÏûÏ¢¶ÓÁĞ
+	message read_msg_; //è¯»å–åˆ°çš„æ¶ˆæ¯
+	msg_deque write_msg_deque_; //å‘é€æ¶ˆæ¯é˜Ÿåˆ—
 
-	std::set<_int32> room_set_; //·¿¼äÁĞ±í
-	std::vector<_int32> room_people_num_vec_; //·¿¼äÈËÊı
-	std::vector<bool> room_status_vec_; //·¿¼ä×´Ì¬
-	_int32 roomId_; //µ±Ç°ËùÔÚµÄ·¿¼äºÅ
-	std::function<void()> fun_; //»Øµ÷º¯Êı
-	std::function<void()> startGameFun_; //ÓÎÏ·¿ªÊ¼
-	std::function<void()> hurtFun_; //ÊÜµ½ÉËº¦
-	std::function<void()> renovateFun_; //Ë¢ĞÂ·¿¼äÁĞ±í
+	std::set<_int32> room_set_; //æˆ¿é—´åˆ—è¡¨
+	std::vector<_int32> room_people_num_vec_; //æˆ¿é—´äººæ•°
+	std::vector<bool> room_status_vec_; //æˆ¿é—´çŠ¶æ€
+	_int32 roomId_; //å½“å‰æ‰€åœ¨çš„æˆ¿é—´å·
+	std::function<void()> fun_; //å›è°ƒå‡½æ•°
+	std::function<void()> startGameFun_; //æ¸¸æˆå¼€å§‹
+	std::function<void()> hurtFun_; //å—åˆ°ä¼¤å®³
+	std::function<void()> renovateFun_; //åˆ·æ–°æˆ¿é—´åˆ—è¡¨
+	std::function<void(const std::string&)> receive_;	//æ¥æ”¶æ¶ˆæ¯
 };
-
-////·µ»ØÒ»¸ö¿Í»§¶ËÀà
-//client CreateClient(boost::asio::io_service &io_service) {
-//	boost::asio::ip::tcp::resolver resolver_(io_service);
-//	boost::asio::ip::tcp::resolver::query query_("127.0.0.1", "9999");
-//	client client_(io_service, resolver_.resolve(query_)); //¿Í»§¶ËÀà
-//
-//	return client_;
-//}
 
 #endif // !CLIENT_H
