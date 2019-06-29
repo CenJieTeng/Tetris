@@ -107,9 +107,19 @@ public:
 		return room_status_vec_;
 	}
 
+	//返回分数列表
+	const std::string& score() const {
+		return score_;
+	}
+
 	//返回当前所在房间号
 	const _int32 roomId() const {
 		return roomId_;
+	}
+
+	//返回result
+	bool result() const {
+		return result_;
 	}
 
 	//修改房间号
@@ -164,6 +174,9 @@ private:
 			break;
 		case GAME_MSG: //游戏相关信息
 			dispose_game();
+			break;
+		case REGISTER_MSG: //注册相关消息
+			dispose_register();
 			break;
 		}
 	}
@@ -260,12 +273,45 @@ private:
 			if (!receive_)
 				break;
 
-			receive_(gameMsg.chat().substr(
-				gameMsg.chat().find(":")+1));
+				receive_(gameMsg.chat().substr(
+					gameMsg.chat().find(":") + 1));
+		}
+		break;
+		case DOWNLOAD_SCORE_MSG: //下载分数列表
+		{
+			score_ = gameMsg.chat();
+
+			if (fun_) {
+				fun_(); //回调刷新
+				//fun_ = std::function<void()>(); //重置
+			}
+		}
+		break;
+		case UPLOAD_SCORE_MSG: //上传分数结果
+		{
+			if (fun_) {
+				fun_(); //回调刷新
+				//fun_ = std::function<void()>(); //重置
+			}
 		}
 		break;
 		default:
 			assert(true);
+		}
+	}
+
+	//处理注册相关处理
+	void dispose_register() {
+		RegisterMsg registerMsg;
+		if (!ParseMessage(registerMsg)) {
+			std::cout << "registerMsg:消息解析失败" << std::endl;
+			return;
+		}
+
+		result_ = registerMsg.result();
+		if (fun_) {
+			fun_(); //回调刷新
+			//fun_ = std::function<void()>(); //重置
 		}
 	}
 
@@ -313,6 +359,8 @@ private:
 	std::vector<_int32> room_people_num_vec_; //房间人数
 	std::vector<bool> room_status_vec_; //房间状态
 	_int32 roomId_; //当前所在的房间号
+	std::string score_; //分数
+	bool result_; //回调函数返回状态
 	std::function<void()> fun_; //回调函数
 	std::function<void()> startGameFun_; //游戏开始
 	std::function<void()> hurtFun_; //受到伤害

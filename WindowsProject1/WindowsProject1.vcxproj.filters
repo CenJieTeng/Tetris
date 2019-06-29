@@ -51,13 +51,13 @@
     <ClInclude Include="block_Z.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\TetrisServer\TetrisServer\message.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="client.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="information.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="message.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="message.pb.h">

@@ -42,7 +42,7 @@ struct TableStruct_message_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::google::protobuf::internal::ParseTable schema[2]
+  static const ::google::protobuf::internal::ParseTable schema[3]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
@@ -52,12 +52,16 @@ void AddDescriptors_message_2eproto();
 class GameMsg;
 class GameMsgDefaultTypeInternal;
 extern GameMsgDefaultTypeInternal _GameMsg_default_instance_;
+class RegisterMsg;
+class RegisterMsgDefaultTypeInternal;
+extern RegisterMsgDefaultTypeInternal _RegisterMsg_default_instance_;
 class ServerMsg;
 class ServerMsgDefaultTypeInternal;
 extern ServerMsgDefaultTypeInternal _ServerMsg_default_instance_;
 namespace google {
 namespace protobuf {
 template<> ::GameMsg* Arena::CreateMaybeMessage<::GameMsg>(Arena*);
+template<> ::RegisterMsg* Arena::CreateMaybeMessage<::RegisterMsg>(Arena*);
 template<> ::ServerMsg* Arena::CreateMaybeMessage<::ServerMsg>(Arena*);
 }  // namespace protobuf
 }  // namespace google
@@ -91,12 +95,14 @@ enum GameMessageType {
   ATK_FOE_MSG = 1,
   GAME_OVER_MSG = 2,
   CHAT_MSG = 3,
+  UPLOAD_SCORE_MSG = 4,
+  DOWNLOAD_SCORE_MSG = 5,
   GameMessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = (std::numeric_limits<::google::protobuf::int32>::min)(),
   GameMessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = (std::numeric_limits<::google::protobuf::int32>::max)()
 };
 bool GameMessageType_IsValid(int value);
 const GameMessageType GameMessageType_MIN = GAME_START_MSG;
-const GameMessageType GameMessageType_MAX = CHAT_MSG;
+const GameMessageType GameMessageType_MAX = DOWNLOAD_SCORE_MSG;
 const int GameMessageType_ARRAYSIZE = GameMessageType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* GameMessageType_descriptor();
@@ -404,6 +410,148 @@ class GameMsg final :
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_message_2eproto;
 };
+// -------------------------------------------------------------------
+
+class RegisterMsg final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:RegisterMsg) */ {
+ public:
+  RegisterMsg();
+  virtual ~RegisterMsg();
+
+  RegisterMsg(const RegisterMsg& from);
+
+  inline RegisterMsg& operator=(const RegisterMsg& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  RegisterMsg(RegisterMsg&& from) noexcept
+    : RegisterMsg() {
+    *this = ::std::move(from);
+  }
+
+  inline RegisterMsg& operator=(RegisterMsg&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const RegisterMsg& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const RegisterMsg* internal_default_instance() {
+    return reinterpret_cast<const RegisterMsg*>(
+               &_RegisterMsg_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  void Swap(RegisterMsg* other);
+  friend void swap(RegisterMsg& a, RegisterMsg& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline RegisterMsg* New() const final {
+    return CreateMaybeMessage<RegisterMsg>(nullptr);
+  }
+
+  RegisterMsg* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<RegisterMsg>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const RegisterMsg& from);
+  void MergeFrom(const RegisterMsg& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RegisterMsg* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string username = 1;
+  void clear_username();
+  static const int kUsernameFieldNumber = 1;
+  const ::std::string& username() const;
+  void set_username(const ::std::string& value);
+  #if LANG_CXX11
+  void set_username(::std::string&& value);
+  #endif
+  void set_username(const char* value);
+  void set_username(const char* value, size_t size);
+  ::std::string* mutable_username();
+  ::std::string* release_username();
+  void set_allocated_username(::std::string* username);
+
+  // string passward = 2;
+  void clear_passward();
+  static const int kPasswardFieldNumber = 2;
+  const ::std::string& passward() const;
+  void set_passward(const ::std::string& value);
+  #if LANG_CXX11
+  void set_passward(::std::string&& value);
+  #endif
+  void set_passward(const char* value);
+  void set_passward(const char* value, size_t size);
+  ::std::string* mutable_passward();
+  ::std::string* release_passward();
+  void set_allocated_passward(::std::string* passward);
+
+  // bool result = 3;
+  void clear_result();
+  static const int kResultFieldNumber = 3;
+  bool result() const;
+  void set_result(bool value);
+
+  // @@protoc_insertion_point(class_scope:RegisterMsg)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr username_;
+  ::google::protobuf::internal::ArenaStringPtr passward_;
+  bool result_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_message_2eproto;
+};
 // ===================================================================
 
 
@@ -618,9 +766,135 @@ inline void GameMsg::set_allocated_chat(::std::string* chat) {
   // @@protoc_insertion_point(field_set_allocated:GameMsg.chat)
 }
 
+// -------------------------------------------------------------------
+
+// RegisterMsg
+
+// string username = 1;
+inline void RegisterMsg::clear_username() {
+  username_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterMsg::username() const {
+  // @@protoc_insertion_point(field_get:RegisterMsg.username)
+  return username_.GetNoArena();
+}
+inline void RegisterMsg::set_username(const ::std::string& value) {
+  
+  username_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:RegisterMsg.username)
+}
+#if LANG_CXX11
+inline void RegisterMsg::set_username(::std::string&& value) {
+  
+  username_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:RegisterMsg.username)
+}
+#endif
+inline void RegisterMsg::set_username(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  username_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:RegisterMsg.username)
+}
+inline void RegisterMsg::set_username(const char* value, size_t size) {
+  
+  username_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:RegisterMsg.username)
+}
+inline ::std::string* RegisterMsg::mutable_username() {
+  
+  // @@protoc_insertion_point(field_mutable:RegisterMsg.username)
+  return username_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterMsg::release_username() {
+  // @@protoc_insertion_point(field_release:RegisterMsg.username)
+  
+  return username_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterMsg::set_allocated_username(::std::string* username) {
+  if (username != nullptr) {
+    
+  } else {
+    
+  }
+  username_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), username);
+  // @@protoc_insertion_point(field_set_allocated:RegisterMsg.username)
+}
+
+// string passward = 2;
+inline void RegisterMsg::clear_passward() {
+  passward_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterMsg::passward() const {
+  // @@protoc_insertion_point(field_get:RegisterMsg.passward)
+  return passward_.GetNoArena();
+}
+inline void RegisterMsg::set_passward(const ::std::string& value) {
+  
+  passward_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:RegisterMsg.passward)
+}
+#if LANG_CXX11
+inline void RegisterMsg::set_passward(::std::string&& value) {
+  
+  passward_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:RegisterMsg.passward)
+}
+#endif
+inline void RegisterMsg::set_passward(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  passward_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:RegisterMsg.passward)
+}
+inline void RegisterMsg::set_passward(const char* value, size_t size) {
+  
+  passward_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:RegisterMsg.passward)
+}
+inline ::std::string* RegisterMsg::mutable_passward() {
+  
+  // @@protoc_insertion_point(field_mutable:RegisterMsg.passward)
+  return passward_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterMsg::release_passward() {
+  // @@protoc_insertion_point(field_release:RegisterMsg.passward)
+  
+  return passward_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterMsg::set_allocated_passward(::std::string* passward) {
+  if (passward != nullptr) {
+    
+  } else {
+    
+  }
+  passward_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), passward);
+  // @@protoc_insertion_point(field_set_allocated:RegisterMsg.passward)
+}
+
+// bool result = 3;
+inline void RegisterMsg::clear_result() {
+  result_ = false;
+}
+inline bool RegisterMsg::result() const {
+  // @@protoc_insertion_point(field_get:RegisterMsg.result)
+  return result_;
+}
+inline void RegisterMsg::set_result(bool value) {
+  
+  result_ = value;
+  // @@protoc_insertion_point(field_set:RegisterMsg.result)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 

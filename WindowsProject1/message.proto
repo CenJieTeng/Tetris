@@ -26,11 +26,20 @@ enum GameMessageType{
 	ATK_FOE_MSG	= 1; //攻击、被攻击
 	GAME_OVER_MSG = 2; //游戏结束
 	CHAT_MSG = 3; //发送、接收 聊天信息
+	UPLOAD_SCORE_MSG = 4; //上传分数
+	DOWNLOAD_SCORE_MSG = 5; //下载排行榜信息
 }
 
 //游戏逻辑相关信息
 message GameMsg{
 	GameMessageType msgType = 1; //消息类型
 	int32 atkPower = 2; //攻击强度
-	string chat = 3; //聊天内容
+	string chat = 3; //聊天内容、上传分数
+}
+
+//注册帐号
+message RegisterMsg{
+	string username = 1; //昵称
+	string passward = 2; //密码
+	bool result = 3; //结果
 }
